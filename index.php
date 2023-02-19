@@ -1,5 +1,5 @@
 <?php
-
+include("config/koneksi.php");
 // Start Session
 session_start();
 // Cek Login Jika sudah login redirect ke admin

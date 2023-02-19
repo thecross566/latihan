@@ -33,5 +33,3 @@ if ($num == 1) {
     // Username tidak ditemukan
     echo "Username tidak ditemukan";
 }
-
-echo $_SESSION['username'];

@@ -3,33 +3,34 @@ $file = "../config/DB/config.json";
 $configJSON = json_decode(file_get_contents($file));
 $DB = $configJSON->DB;
 
-// GET POST
-$username = $_POST['username'];
-$password = $_POST['password'];
-$host = $_POST['host'];
-$name = $_POST['DB'];
+try {
+  // GET POST
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+  $host = $_POST['host'];
+  $name = $_POST['DB'];
 
-$DB->host = $host;
-$DB->username = $username;
-$DB->password = $password;
-$DB->name_db = $name;
+  $DB->host = $host;
+  $DB->username = $username;
+  $DB->password = $password;
+  $DB->name_db = $name;
 
 
 
-$koneksiCreate = new mysqli($host, $username, $password);
-if ($koneksiCreate->connect_errno) {
+  $koneksiCreate = new mysqli($host, $username, $password);
+  if ($koneksiCreate->connect_errno) {
 ?>
-  <script>
-    alert("PASTIKAN host username dan password sudah sesuai dengan server mysql")
-  </script>
-  <meta http-equiv="refresh" content="0; url=../setup-DB.php">
-  <?php
-  exit;
-}
-$query = $koneksiCreate->query("CREATE DATABASE IF NOT EXISTS $name ;");
-if ($query) {
-  $koneksiCreate->select_db($name);
-  $queryQ = "CREATE TABLE IF NOT EXISTS `user` (
+<script>
+alert("PASTIKAN host username dan password sudah sesuai dengan server mysql")
+</script>
+<meta http-equiv="refresh" content="0; url=../setup-DB.php">
+<?php
+    exit;
+  }
+  $query = $koneksiCreate->query("CREATE DATABASE IF NOT EXISTS $name ;");
+  if ($query) {
+    $koneksiCreate->select_db($name);
+    $queryQ = "CREATE TABLE IF NOT EXISTS `user` (
     id VARCHAR(100) PRIMARY KEY NOT NULL,
     username VARCHAR(20) NOT NULL,
     email VARCHAR(50) NOT NULL,
@@ -78,13 +79,22 @@ if ($query) {
 
 
 
-  $res = $koneksiCreate->multi_query($queryQ) or die($koneksiCreate->error);
-  // var_dump($res);
-  if ($res) {
-    // SEND TO JSON
-    file_put_contents($file, json_encode($configJSON));
-  ?>
-    <meta http-equiv="refresh" content="0; url=../index.php">
+    $res = $koneksiCreate->multi_query($queryQ) or die($koneksiCreate->error);
+    // var_dump($res);
+    if ($res) {
+      // SEND TO JSON
+      file_put_contents($file, json_encode($configJSON));
+    ?>
+<meta http-equiv="refresh" content="0; url=../index.php">
 <?php
+    }
   }
+} catch (\Throwable $th) {
+  ?>
+<script>
+alert("PASTIKAN host username dan password sudah sesuai dengan server mysql")
+</script>
+<meta http-equiv="refresh" content="0; url=../setup-DB.php">
+<?php
+
 }

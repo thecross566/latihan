@@ -3,7 +3,7 @@ include("config/koneksi.php");
 // Start Session
 session_start();
 // Cek Login Jika sudah login redirect ke admin
-if (isset($_SESSION['is_login'])) {
+if (isset($_SESSION['is_login']) && $_SESSION['is_login'] === TRUE) {
 ?>
     <meta http-equiv="refresh" content="0; url=admin/index.php">
 <?php
